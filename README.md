@@ -1,1 +1,1 @@
-# curser
+# curs>r
