@@ -13,14 +13,14 @@ cd build
 ### Usage
 ```bash
 ➜ ./curser -h
-Usage: curser [OPTIONS]
-OPTIONS:
-	-ifn   interface name
-	-op    type of packet[req/rep]
-	-vpa   victim ip
-	-sha   sender mac address
-	-gpa   gateway ip
-	-gha   gateway mac address
+Usage:  curser [ -<flag> [<val>] | --<name> <val>] ]...
+
+   -i, --interface-name       traffic output interface
+   -o, --op-code              type of packet[req/rep]
+   -v, --victim-ip            victim ip address
+       --dst-ip               gateway ip
+       --dst-mac              gateway mac address
+   -h, --help                 display usage information and exit
   
-➜ sudo ./curser -ifn en0 -op req -vpa 192.168.0.22 -sha 00:AA:BB:CC:DD:EE -gpa 192.168.1.1 -gha 00:01:02:03:04:05
+➜ sudo ./curser -i en0 -o rep -v 192.168.0.22 --dst-ip 192.168.1.1 --dst-mac 00:01:02:03:04:05
 ```
