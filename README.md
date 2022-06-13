@@ -16,10 +16,11 @@ cd build
 Usage: curser [OPTIONS]
 OPTIONS:
 	-ifn   interface name
+	-op    type of packet[req/rep]
 	-vpa   victim ip
 	-sha   sender mac address
 	-gpa   gateway ip
 	-gha   gateway mac address
   
-➜ sudo ./curser -ifn en0 -vpa 192.168.0.22 -sha 00:AA:BB:CC:DD:EE -gpa 192.168.1.1 -gha 00:01:02:03:04:05
+➜ sudo ./curser -ifn en0 -op req -vpa 192.168.0.22 -sha 00:AA:BB:CC:DD:EE -gpa 192.168.1.1 -gha 00:01:02:03:04:05
 ```
