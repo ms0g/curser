@@ -28,9 +28,10 @@ void getMacAddr(const char* ifname, uint8_t* mac) {
     unsigned char *hwaddr = nullptr;
 
     if (getifaddrs(&ifaddr) == -1) {
-         perror("getifaddrs");
+        perror("getifaddrs");
+        exit(EXIT_FAILURE);
     } else {
-         for (ifa = ifaddr; ifa != NULL; ifa = ifa->ifa_next) {
+         for (ifa = ifaddr; ifa != nullptr; ifa = ifa->ifa_next) {
 #ifdef __APPLE__
             if (ifa->ifa_addr && ifa->ifa_addr->sa_family == AF_LINK) {
 #elif __linux__
@@ -38,9 +39,10 @@ void getMacAddr(const char* ifname, uint8_t* mac) {
 #endif
                 if (strcmp(ifa->ifa_name, ifname) == 0) {  
 #ifdef __APPLE__
-                    hwaddr = (unsigned char *)LLADDR((struct sockaddr_dl *)(ifa)->ifa_addr);
+                    hwaddr = reinterpret_cast<unsigned char *>(
+                        LLADDR(reinterpret_cast<struct sockaddr_dl *>(ifa->ifa_addr)));
 #elif __linux__
-                    struct sockaddr_ll *s = (struct sockaddr_ll*)ifa->ifa_addr;
+                    struct sockaddr_ll *s = reinterpret_cast<struct sockaddr_ll*>(ifa->ifa_addr);
                     hwaddr = s->sll_addr;
 #endif
                     memcpy(mac, hwaddr, 6);
@@ -50,5 +52,4 @@ void getMacAddr(const char* ifname, uint8_t* mac) {
         }
     }
     freeifaddrs(ifaddr);
-    
 }
