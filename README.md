@@ -17,7 +17,7 @@ Usage:  curser [ -<flag> [<val>] | --<name> <val>] ]...
 
    -i, --interface-name       traffic output interface
    -o, --op-code              type of packet[req/rep]
-   	   --victim-ip            victim ip address
+   	 --victim-ip            victim ip address
        --dst-ip               gateway ip
        --dst-mac              gateway mac address
    -h, --help                 display usage information and exit
