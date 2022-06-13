@@ -6,7 +6,7 @@
 #elif __APPLE__
 #include <sys/socket.h>
 #include <net/ndrv.h>
- #include <unistd.h>
+#include <unistd.h>
 #endif
 #include "ll_endp.h"
 
