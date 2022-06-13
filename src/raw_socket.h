@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 #ifdef __linux__
 #include <linux/if_packet.h>
@@ -7,7 +8,6 @@
 #include <net/ndrv.h>
  #include <unistd.h>
 #endif
-
 #include "ll_endp.h"
 
 class base_socket {};
@@ -19,7 +19,7 @@ private:
     ll_endpoint m_ep;
 public:
     explicit raw_socket(int family, int protocol);
-    explicit raw_socket();
+    raw_socket();
     ~raw_socket();
 
     int type() const {
@@ -35,6 +35,5 @@ public:
     }
 
     void bind(const ll_endpoint& ep);
-    
     void sendto(const void* buf, size_t len);
 };

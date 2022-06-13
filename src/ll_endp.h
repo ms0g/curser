@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 #include <string_view>
 #ifdef __linux__
@@ -27,18 +28,16 @@ public:
     using native_handle_type = decltype(sockaddr);
     
     ll_endpoint() = default;
-    ll_endpoint(std::string_view& ifname, uint8_t* sha = nullptr);
+    explicit ll_endpoint(std::string_view& ifname, uint8_t* sha = nullptr);
 
     ll_endpoint& operator=(const ll_endpoint& other){
         sockaddr = other.sockaddr;
         return *this;
     }
     
-    
     native_handle_type* native_handle() {
         return &sockaddr;
     }
-    
     
     size_t size() const {
         return sizeof(sockaddr);

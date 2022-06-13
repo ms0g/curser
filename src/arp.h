@@ -1,5 +1,11 @@
 #pragma once
+
 #include <cstdint>
+
+enum class arp_op : uint16_t {
+    request = 0x0001,
+    reply = 0x0002,
+};
 
 struct eth_frame;
 struct arphdr {
@@ -14,24 +20,25 @@ struct arphdr {
         uint32_t tpa;           /* Target Protocol Address */
     } __attribute__((packed));
 
-struct arphdr *arp_hdr(struct eth_frame *eth);
+struct arphdr* arp_hdr(struct eth_frame* eth);
 
-class ArpBuilder {
+class PktBuilder {
 private:
     uint8_t raw_pkt[46];
-    struct arphdr *arp_pkt;
-    struct eth_frame *eth_pkt;
+    struct arphdr* arp_pkt;
+    struct eth_frame* eth_pkt;
+    arp_op m_op;
 public:
-    ArpBuilder();
-    ArpBuilder& set_hrd(uint16_t hrd);
-    ArpBuilder& set_pro(uint16_t pro);
-    ArpBuilder& set_hln(uint8_t hln);
-    ArpBuilder& set_pln(uint8_t pln);
-    ArpBuilder& set_op(uint16_t op);
-    ArpBuilder& set_sha(uint8_t *sha);
-    ArpBuilder& set_spa(uint32_t spa);
-    ArpBuilder& set_tha(uint8_t *tha);
-    ArpBuilder& set_tpa(uint32_t tpa);
+    explicit PktBuilder(arp_op op);
+    PktBuilder& set_hrd(uint16_t hrd);
+    PktBuilder& set_pro(uint16_t pro);
+    PktBuilder& set_hln(uint8_t hln);
+    PktBuilder& set_pln(uint8_t pln);
+    PktBuilder& set_op(uint16_t op);
+    PktBuilder& set_sha(uint8_t* sha);
+    PktBuilder& set_spa(uint32_t spa);
+    PktBuilder& set_tha(uint8_t* tha);
+    PktBuilder& set_tpa(uint32_t tpa);
     const uint8_t* packet() const;
     size_t size() const;
 };

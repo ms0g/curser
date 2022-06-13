@@ -1,4 +1,5 @@
 #pragma once
+
 #include <cstdint>
 
 struct eth_frame {
@@ -8,4 +9,4 @@ struct eth_frame {
     uint8_t payload[];
 } __attribute__((packed));
 
-struct eth_frame* eth_hdr(void *buf);
+struct eth_frame* eth_hdr(void* buf);
