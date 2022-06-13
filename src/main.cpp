@@ -7,13 +7,13 @@
 
 
 int main(int argc, char** argv) {
-    static const char *usage = "Usage: curser [OPTIONS]\n"
-                                "OPTIONS:\n\t-ifn   interface name\n\t"
-                                "-op    type of packet[req/rep]\n\t"
-                                "-vpa   victim ip\n\t"
-                                "-sha   sender mac address\n\t"
-                                "-gpa   gateway ip\n\t"
-                                "-gha   gateway mac address";
+    static const char *usage = "Usage:  curser [ -<flag> [<val>] | --<name> <val>] ]...\n\n   "
+                                "-i, --interface-name       traffic output interface\n   "
+                                "-o, --op-code              type of packet[req/rep]\n   "
+                                "-v, --victim-ip            victim ip address\n   "
+                                "    --dst-ip               gateway ip\n   "
+                                "    --dst-dmac             gateway mac address\n   "
+                                "-h, --help                 display usage information and exit\n";
     
     std::string_view ifname;
     uint32_t vpa = 0;
@@ -27,30 +27,22 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     } else {
         for (int i = 1; i < argc; i++) {
-            if (!std::strcmp(argv[i], "-ifn")) {
+            if (std::strcmp(argv[i], "-i")) {
                 ifname = argv[++i];
-            } else if (!std::strcmp(argv[i], "-op")) {
+            } else if (!std::strcmp(argv[i], "-o") || !std::strcmp(argv[i], "--op-code")) {
                 if (!std::strcmp(argv[++i], "req")) {
                     op = arp_op::request;
                 } else if (!std::strcmp(argv[i], "rep")) {
                     op = arp_op::reply;
                 } else {
-                    perror("Invalid op");
+                    perror("Invalid op code");
                     return EXIT_FAILURE;
                 }
-            } else if (!std::strcmp(argv[i], "-vpa")) {
+            } else if (!std::strcmp(argv[i], "-v") || !std::strcmp(argv[i], "--victim-ip")) {
                 vpa = inet_bf(argv[++i]);
-            } else if (!std::strcmp(argv[i], "-gpa")) {
+            } else if (!std::strcmp(argv[i], "--dst-ip")) {
                 gpa = inet_bf(argv[++i]);
-            } else if (!std::strcmp(argv[i], "-sha")) {
-                std::sscanf(argv[++i], "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx", 
-                    &sha[0],
-                    &sha[1],
-                    &sha[2],
-                    &sha[3],
-                    &sha[4],
-                    &sha[5]);
-            } else if (!std::strcmp(argv[i], "-gha")) {
+            } else if (!std::strcmp(argv[i], "--dst-dmac")) {
                 std::sscanf(argv[++i], "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx",
                     &gha[0],
                     &gha[1],
@@ -58,7 +50,7 @@ int main(int argc, char** argv) {
                     &gha[3],
                     &gha[4],
                     &gha[5]);
-            } else if (!std::strcmp(argv[i], "-h")) {
+            } else if (!std::strcmp(argv[i], "-h") || !std::strcmp(argv[i], "--help")) {
                 std::cout << usage << std::endl;
                 return EXIT_SUCCESS;
             }
