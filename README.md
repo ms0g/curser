@@ -17,10 +17,11 @@ Usage:  curser [ -<flag> [<val>] | --<name> <val>] ]...
 
    -i, --interface-name       traffic output interface
    -o, --op-code              type of packet[req/rep]
-   -v, --victim-ip            victim ip address
+   	   --victim-ip            victim ip address
        --dst-ip               gateway ip
        --dst-mac              gateway mac address
    -h, --help                 display usage information and exit
+   -v, --version              display version information and exit
   
-➜ sudo ./curser -i en0 -o rep -v 192.168.0.22 --dst-ip 192.168.1.1 --dst-mac 00:01:02:03:04:05
+➜ sudo ./curser -i en0 -o rep --victim-ip 192.168.0.22 --dst-ip 192.168.1.1 --dst-mac 00:01:02:03:04:05
 ```
