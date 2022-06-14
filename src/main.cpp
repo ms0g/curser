@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cassert>
 #include "ll_endp.h"
 #include "eth.h"
 #include "arp.h"
@@ -16,7 +17,7 @@
 
 
 int main(int argc, char** argv) {
-    static const char *usage = "Usage:  curser [ -<flag> [<val>] | --<name> <val>] ]...\n\n   "
+    static const char *usage = "Usage:  curser [ -<flag> [<val>] | --<name> [<val>] ]...\n\n   "
                                 "-i, --interface-name       traffic output interface\n   "
                                 "-o, --op-code              type of packet[req/rep]\n   "
                                 "    --victim-ip            victim ip address\n   "
@@ -31,16 +32,19 @@ int main(int argc, char** argv) {
     uint8_t sha[6] = {0};
     uint8_t gha[6] = {0};
     arp_op op;
-
-    if (argc < 10) {
-        if (argc != 2 && (
-                        strcmp(argv[1], "-h") != 0 || strcmp(argv[1], "--help") != 0 || 
-                        strcmp(argv[1], "-v") != 0 || strcmp(argv[1], "--version") != 0)) {
+         
+    if (argc < 11) {
+        if (argc == 2 && (!std::strcmp(argv[1], "-h") || !std::strcmp(argv[1], "--help"))) {
             std::cout << usage << std::endl;
-            return EXIT_FAILURE;
+            return EXIT_SUCCESS;
+        } else if (argc == 2 && (!std::strcmp(argv[1], "-v") || !std::strcmp(argv[1], "--version"))) {
+            std::cout << "curser version " << VERSION << std::endl;
+            return EXIT_SUCCESS;
         }
+        std::cout << usage << std::endl;
+        return EXIT_FAILURE;
     }
-    
+
     for (int i = 1; i < argc; i++) {
         if (!std::strcmp(argv[i], "-i")) {
             ifname = argv[++i];
@@ -60,12 +64,9 @@ int main(int argc, char** argv) {
         } else if (!std::strcmp(argv[i], "--dst-mac")) {
             std::sscanf(argv[++i], "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx", &gha[0],&gha[1],&gha[2],
                                                                     &gha[3],&gha[4],&gha[5]);
-        } else if (!std::strcmp(argv[i], "-h") || !std::strcmp(argv[i], "--help")) {
+        } else {
             std::cout << usage << std::endl;
-            return EXIT_SUCCESS;
-        } else if (!std::strcmp(argv[i], "-v") || !std::strcmp(argv[i], "--version")) {
-            std::cout << "curser version " << VERSION << std::endl;
-            return EXIT_SUCCESS;
+            return EXIT_FAILURE;
         }
     }
     

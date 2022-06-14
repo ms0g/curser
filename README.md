@@ -13,7 +13,7 @@ cd build
 ### Usage
 ```bash
 ➜ ./curser -h
-Usage:  curser [ -<flag> [<val>] | --<name> <val>] ]...
+Usage:  curser [ -<flag> [<val>] | --<name> [<val>] ]...
 
    -i, --interface-name       traffic output interface
    -o, --op-code              type of packet[req/rep]
