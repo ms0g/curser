@@ -1,3 +1,7 @@
+#include <cstring>
+#ifdef __linux__
+#include <arpa/inet.h>
+#endif
 #include "ll_endp.h"
 
 ll_endpoint::ll_endpoint(std::string_view &ifname, uint8_t* sha)  {

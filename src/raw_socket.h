@@ -1,13 +1,4 @@
 #pragma once
-
-#include <iostream>
-#ifdef __linux__
-#include <linux/if_packet.h>
-#elif __APPLE__
-#include <sys/socket.h>
-#include <net/ndrv.h>
-#include <unistd.h>
-#endif
 #include "ll_endp.h"
 
 class base_socket {};

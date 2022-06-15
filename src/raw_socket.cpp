@@ -1,3 +1,11 @@
+#include <iostream>
+#include <unistd.h> //close
+ #include <sys/socket.h> //socket
+#ifdef __linux__
+#include <arpa/inet.h>
+#elif __APPLE__
+#include <net/ndrv.h>
+#endif
 #include "raw_socket.h"
 
 raw_socket::raw_socket(int family, int protocol): m_family(family), m_protocol(htons(protocol)) {
@@ -10,7 +18,7 @@ raw_socket::raw_socket(int family, int protocol): m_family(family), m_protocol(h
 
 #ifdef __linux__
 raw_socket::raw_socket(): m_family(AF_PACKET), m_protocol(htons(ETH_P_ALL)) {
-    m_sock = socket(family, type(), protocol);
+    m_sock = socket(m_family, type(), m_protocol);
     if (m_sock < 0) {
         perror("socket");
         exit(EXIT_FAILURE);

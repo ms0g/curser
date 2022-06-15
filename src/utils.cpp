@@ -1,12 +1,14 @@
 #include <iostream>
-#include <unistd.h>
-#include <ifaddrs.h>
+#include <cstring>
+#include <ifaddrs.h> //getifaddrs
+#include <arpa/inet.h> //inet_pton
 #ifdef __APPLE__
 #include <net/ndrv.h>
-#include <arpa/inet.h>
 #include <net/if_dl.h>
 #elif __linux__
 #include <linux/if.h>
+#include <net/ethernet.h>
+#include <linux/if_packet.h> //struct sockaddr_ll
 #endif
 
 #include "utils.h"

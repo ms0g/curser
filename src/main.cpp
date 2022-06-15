@@ -1,5 +1,5 @@
 #include <iostream>
-#include <cassert>
+#include <cstring>
 #include "ll_endp.h"
 #include "eth.h"
 #include "arp.h"
@@ -72,8 +72,8 @@ int main(int argc, char** argv) {
     
     
     getMacAddr(ifname.data(), sha);
-    
-    ll_endpoint ep{ifname};
+   
+    ll_endpoint ep{ifname, sha};
     raw_socket sock{};
     sock.bind(ep);
     

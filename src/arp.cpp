@@ -1,8 +1,9 @@
 #include <iostream>
-#ifdef __APPLE__
+#include <cstring>
 #include <net/ethernet.h>
+#ifdef __linux__
+#include <arpa/inet.h>
 #endif
-
 #include "arp.h"
 #include "eth.h"
 
