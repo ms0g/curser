@@ -4,12 +4,12 @@
 class base_socket {};
 class raw_socket: public base_socket {
 private:
-    int m_family;
-    int m_protocol;
+    const int m_family;
+    const int m_protocol;
     int m_sock;
     ll_endpoint m_ep;
 public:
-    explicit raw_socket(int family, int protocol);
+    explicit raw_socket(const int family, const int protocol);
     raw_socket();
     ~raw_socket();
 

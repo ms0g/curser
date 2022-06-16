@@ -30,15 +30,15 @@ private:
     arp_op m_op;
 public:
     explicit PktBuilder(arp_op op);
-    PktBuilder& set_hrd(uint16_t hrd);
-    PktBuilder& set_pro(uint16_t pro);
-    PktBuilder& set_hln(uint8_t hln);
-    PktBuilder& set_pln(uint8_t pln);
-    PktBuilder& set_op(uint16_t op);
-    PktBuilder& set_sha(uint8_t* sha);
-    PktBuilder& set_spa(uint32_t spa);
-    PktBuilder& set_tha(uint8_t* tha);
-    PktBuilder& set_tpa(uint32_t tpa);
+    PktBuilder& set_hrd(const uint16_t hrd);
+    PktBuilder& set_pro(const uint16_t pro);
+    PktBuilder& set_hln(const uint8_t hln);
+    PktBuilder& set_pln(const uint8_t pln);
+    PktBuilder& set_op(const uint16_t op);
+    PktBuilder& set_sha(const uint8_t* sha);
+    PktBuilder& set_spa(const uint32_t spa);
+    PktBuilder& set_tha(const uint8_t* tha);
+    PktBuilder& set_tpa(const uint32_t tpa);
     const uint8_t* packet() const;
     size_t size() const;
 };

@@ -24,7 +24,7 @@ uint32_t inet_bf(const char* addr) {
     return ntohl(sa.sin_addr.s_addr);
 }
 
-void getMacAddr(const char* ifname, uint8_t* mac) {
+void getMacAddr(const char* ifname, uint8_t* const mac) {
     struct ifaddrs *ifaddr = nullptr;
     struct ifaddrs *ifa = nullptr;
     unsigned char *hwaddr = nullptr;

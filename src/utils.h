@@ -5,7 +5,7 @@
 
 uint32_t inet_bf(const char* addr);
 
-void getMacAddr(const char* ifname, uint8_t* mac);
+void getMacAddr(const char* ifname, uint8_t* const mac);
 
 template <typename T>
 auto as_integer(T const val) {

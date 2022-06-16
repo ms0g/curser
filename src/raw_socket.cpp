@@ -8,7 +8,7 @@
 #endif
 #include "raw_socket.h"
 
-raw_socket::raw_socket(int family, int protocol): m_family(family), m_protocol(htons(protocol)) {
+raw_socket::raw_socket(const int family, const int protocol): m_family(family), m_protocol(htons(protocol)) {
     m_sock = socket(family, type(), protocol);
     if (m_sock < 0) {
         perror("socket");
