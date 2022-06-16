@@ -9,7 +9,7 @@ private:
     int m_sock;
     ll_endpoint m_ep;
 public:
-    explicit raw_socket(const int family, const int protocol);
+    raw_socket(const int family, const int protocol);
     raw_socket();
     ~raw_socket();
 

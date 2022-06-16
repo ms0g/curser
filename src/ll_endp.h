@@ -24,7 +24,7 @@ public:
     using native_handle_type = decltype(sockaddr);
     
     ll_endpoint() = default;
-    explicit ll_endpoint(const std::string_view& ifname, const uint8_t* sha);
+    ll_endpoint(const std::string_view& ifname, const uint8_t* sha);
 
     ll_endpoint& operator=(const ll_endpoint& other){
         sockaddr = other.sockaddr;
