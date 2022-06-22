@@ -44,8 +44,9 @@ void getMacAddr(const char* ifname, uint8_t* const mac) {
                     hwaddr = reinterpret_cast<unsigned char *>(
                         LLADDR(reinterpret_cast<struct sockaddr_dl *>(ifa->ifa_addr)));
 #elif __linux__
-                    struct sockaddr_ll *s = reinterpret_cast<struct sockaddr_ll*>(ifa->ifa_addr);
-                    hwaddr = s->sll_addr;
+                  
+                    hwaddr = reinterpret_cast<unsigned char *>(
+                        reinterpret_cast<struct sockaddr_ll*>(ifa->ifa_addr)->sll_addr);
 #endif
                     memcpy(mac, hwaddr, 6);
                     break;

@@ -4,7 +4,7 @@
 #endif
 #include "ll_endp.h"
 
-ll_endpoint::ll_endpoint(const std::string_view &ifname, const uint8_t* sha)  {
+ll_endpoint::ll_endpoint(const std::string_view& ifname, const uint8_t* sha)  {
         memset(&sockaddr, 0, sizeof(sockaddr));
 #ifdef __APPLE__
         sockaddr.snd_len = sizeof(sockaddr);
