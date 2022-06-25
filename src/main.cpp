@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
     }
 
     for (int i = 1; i < argc; i++) {
-        if (!std::strcmp(argv[i], "-i")) {
+        if (!std::strcmp(argv[i], "-i") || !std::strcmp(argv[i], "--interface-name")) {
             ifname = argv[++i];
         } else if (!std::strcmp(argv[i], "-o") || !std::strcmp(argv[i], "--op-code")) {
             if (!std::strcmp(argv[++i], "req")) {
