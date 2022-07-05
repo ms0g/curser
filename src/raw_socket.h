@@ -1,4 +1,5 @@
 #pragma once
+
 #include "ll_endp.h"
 
 class base_socket {};
@@ -26,5 +27,6 @@ public:
     }
 
     void bind(const ll_endpoint& ep);
+
     void sendto(const void* buf, size_t len);
 };

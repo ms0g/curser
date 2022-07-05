@@ -40,7 +40,7 @@ raw_socket::~raw_socket() {
 
 void raw_socket::bind(const ll_endpoint& ep) {
     m_ep = ep;
-    if (::bind(m_sock, reinterpret_cast<struct sockaddr *>(m_ep.native_handle()), ep.size()) < 0) {
+    if (::bind(m_sock, reinterpret_cast<struct sockaddr *>(m_ep.native_handle()), m_ep.size()) < 0) {
         perror("bind");
         exit(EXIT_FAILURE);
     }

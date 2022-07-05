@@ -18,6 +18,14 @@ PktBuilder::PktBuilder(arp_op op):m_op(op) {
     arp_pkt = arp_hdr(eth_pkt);
 }
 
+const uint8_t* PktBuilder::packet() const {
+    return raw_pkt;
+}
+
+size_t PktBuilder::size() const {
+    return sizeof(raw_pkt);
+}
+
 PktBuilder& PktBuilder::set_hrd(const uint16_t hrd) {
     arp_pkt->hrd = htons(hrd);
     return *this;
@@ -69,13 +77,6 @@ PktBuilder& PktBuilder::set_tpa(const uint32_t tpa) {
     return *this;
 }
 
-const uint8_t* PktBuilder::packet() const {
-    return raw_pkt;
-}
-
-size_t PktBuilder::size() const {
-    return sizeof(raw_pkt);
-}
 
 
 
