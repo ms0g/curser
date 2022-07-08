@@ -1,14 +1,14 @@
 #include <iostream>
 #include <unistd.h> //close
- #include <sys/socket.h> //socket
+#include <sys/socket.h> //socket
+
 #ifdef __linux__
 #include <arpa/inet.h>
-#elif __APPLE__
-#include <net/ndrv.h>
 #endif
+
 #include "raw_socket.h"
 
-raw_socket::raw_socket(const int family, const int protocol): m_family(family), m_protocol(htons(protocol)) {
+raw_socket::raw_socket(const int family, const int protocol) : m_family(family), m_protocol(htons(protocol)) {
     m_sock = socket(family, type(), protocol);
     if (m_sock < 0) {
         perror("socket");
@@ -25,13 +25,15 @@ raw_socket::raw_socket(): m_family(AF_PACKET), m_protocol(htons(ETH_P_ALL)) {
     }
 }
 #elif __APPLE__
-raw_socket::raw_socket(): m_family(AF_NDRV), m_protocol(0) {
+
+raw_socket::raw_socket() : m_family(AF_NDRV), m_protocol(0) {
     m_sock = socket(m_family, type(), m_protocol);
     if (m_sock < 0) {
         perror("socket");
         exit(EXIT_FAILURE);
     }
 }
+
 #endif
 
 raw_socket::~raw_socket() {
@@ -40,14 +42,14 @@ raw_socket::~raw_socket() {
 
 void raw_socket::bind(const ll_endpoint& ep) {
     m_ep = ep;
-    if (::bind(m_sock, reinterpret_cast<struct sockaddr *>(m_ep.native_handle()), m_ep.size()) < 0) {
+    if (::bind(m_sock, reinterpret_cast<struct sockaddr*>(m_ep.native_handle()), m_ep.size()) < 0) {
         perror("bind");
         exit(EXIT_FAILURE);
     }
 }
 
 void raw_socket::sendto(const void* buf, size_t len) {
-    if (::sendto(m_sock, buf, len, 0, reinterpret_cast<struct sockaddr *>(m_ep.native_handle()), m_ep.size()) < 0) {
+    if (::sendto(m_sock, buf, len, 0, reinterpret_cast<struct sockaddr*>(m_ep.native_handle()), m_ep.size()) < 0) {
         perror("sendto");
         exit(EXIT_FAILURE);
     }

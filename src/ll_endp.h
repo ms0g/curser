@@ -2,14 +2,17 @@
 
 #include <iostream>
 #include <string_view>
+
 #ifdef __linux__
 #include <linux/if_packet.h> //struct sockaddr_ll
 #include <net/ethernet.h>
 #include <net/if.h>
 #elif __APPLE__
+
 #include <net/if_dl.h>
 #include <net/if.h>
 #include <net/ndrv.h>
+
 #endif
 
 
@@ -22,20 +25,18 @@ private:
 #endif
 public:
     using native_handle_type = decltype(sockaddr);
-    
+
     ll_endpoint() = default;
+
     ll_endpoint(const std::string_view& ifname, const uint8_t* sha);
 
-    ll_endpoint& operator=(const ll_endpoint& other){
-        sockaddr = other.sockaddr;
-        return *this;
-    }
-    
+    ll_endpoint& operator=(const ll_endpoint& other) = default;
+
     native_handle_type* native_handle() {
         return &sockaddr;
     }
-    
-    size_t size() const {
+
+    [[nodiscard]] size_t size() const {
         return sizeof(sockaddr);
     }
 

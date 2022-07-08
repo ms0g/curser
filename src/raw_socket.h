@@ -2,27 +2,31 @@
 
 #include "ll_endp.h"
 
-class base_socket {};
-class raw_socket: public base_socket {
+class base_socket {
+};
+
+class raw_socket : public base_socket {
 private:
     const int m_family;
     const int m_protocol;
     int m_sock;
     ll_endpoint m_ep;
 public:
-    raw_socket(const int family, const int protocol);
+    raw_socket(int family, int protocol);
+
     raw_socket();
+
     ~raw_socket();
 
-    int type() const {
+    [[nodiscard]] static int type() {
         return SOCK_RAW;
     }
 
-    int family() const {
+    [[nodiscard]] int family() const {
         return m_family;
     }
 
-    int protocol() const {
+    [[nodiscard]] int protocol() const {
         return m_protocol;
     }
 
