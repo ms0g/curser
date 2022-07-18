@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iomanip>
 #include <iostream>
 #include <string_view>
 
@@ -18,6 +19,7 @@
 
 class ll_endpoint {
 private:
+    uint8_t* m_sha{nullptr};
 #ifdef __APPLE__
     struct sockaddr_ndrv sockaddr{};
 #elif __linux__
@@ -28,7 +30,7 @@ public:
 
     ll_endpoint() = default;
 
-    ll_endpoint(const std::string_view& ifname, const uint8_t* sha);
+    ll_endpoint(const std::string_view& ifname, uint8_t* sha);
 
     ll_endpoint& operator=(const ll_endpoint& other) = default;
 
@@ -42,18 +44,18 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const ll_endpoint& ep) {
 #ifdef __APPLE__
-        os << ep.sockaddr.snd_name;
+        os << ep.sockaddr.snd_name << ": ";
 #elif __linux__
         char ifname[IF_NAMESIZE];
-        os << if_indextoname(ep.sockaddr.sll_ifindex, ifname) << 
-        ":" << std::hex << static_cast<int>(ep.sockaddr.sll_addr[0]) << ":" 
-        << std::hex << static_cast<int>(ep.sockaddr.sll_addr[1]) << ":" 
-        << std::hex << static_cast<int>(ep.sockaddr.sll_addr[2]) << ":"
-        << std::hex << static_cast<int>(ep.sockaddr.sll_addr[3]) << ":"
-        << std::hex << static_cast<int>(ep.sockaddr.sll_addr[4]) << ":" 
-        << std::hex << static_cast<int>(ep.sockaddr.sll_addr[5]);
-
+        os << if_indextoname(ep.sockaddr.sll_ifindex, ifname) << ": ";
 #endif
+        os << std::hex << std::setfill('0')
+           << std::setw(2) << static_cast<int>(ep.m_sha[0]) << ":"
+           << std::setw(2) << static_cast<int>(ep.m_sha[1]) << ":"
+           << std::setw(2) << static_cast<int>(ep.m_sha[2]) << ":"
+           << std::setw(2) << static_cast<int>(ep.m_sha[3]) << ":"
+           << std::setw(2) << static_cast<int>(ep.m_sha[4]) << ":"
+           << std::setw(2) << static_cast<int>(ep.m_sha[5]);
         return os;
     }
 };

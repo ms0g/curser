@@ -93,7 +93,7 @@ int main(int argc, char** argv) {
                 .set_op(as_integer(op));
 
         sock.sendto(pktBuilder.packet(), pktBuilder.size());
-        std::cout << "sent arp packet on the interface " << ep << std::endl;
+        std::cout << "+sent packet on the interface " << ep << std::endl;
     }
 
     return EXIT_SUCCESS;
