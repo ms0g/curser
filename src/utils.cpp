@@ -39,14 +39,13 @@ void getMacAddr(const char* ifname, uint8_t* const mac) {
 #ifdef __APPLE__
             if (ifa->ifa_addr && ifa->ifa_addr->sa_family == AF_LINK) {
 #elif __linux__
-                if (ifa->ifa_addr && ifa->ifa_addr->sa_family == AF_PACKET) {
+            if (ifa->ifa_addr && ifa->ifa_addr->sa_family == AF_PACKET) {
 #endif
                 if (strcmp(ifa->ifa_name, ifname) == 0) {
 #ifdef __APPLE__
                     hwaddr = reinterpret_cast<unsigned char*>(
                             LLADDR(reinterpret_cast<struct sockaddr_dl*>(ifa->ifa_addr)));
 #elif __linux__
-
                     hwaddr = reinterpret_cast<unsigned char *>(
                         reinterpret_cast<struct sockaddr_ll*>(ifa->ifa_addr)->sll_addr);
 #endif
