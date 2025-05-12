@@ -3,7 +3,6 @@
 #include <cstring>
 #include <ifaddrs.h> //getifaddrs
 #include <arpa/inet.h> //inet_pton
-
 #ifdef __APPLE__
 #include <net/if_dl.h>
 #elif __linux__

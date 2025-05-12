@@ -2,12 +2,10 @@
 #include <iostream>
 #include <cstring>
 #include <net/ethernet.h>
-
 #ifdef __linux__
 #include <arpa/inet.h>
 #endif
-
-#include "eth.h"
+#include "ethernet.h"
 
 arphdr* arp_hdr(eth_frame* eth) {
     return reinterpret_cast<arphdr*>(eth->payload);
