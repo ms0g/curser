@@ -1,9 +1,9 @@
 #include <iostream>
 #include <cstring>
-#include "ll_endp.h"
 #include "arp.h"
 #include "utils.h"
-#include "raw_socket.h"
+#include "rawSocket.h"
+#include "linkLayerEndpoint.h"
 
 #define VERSION_MAJOR 0
 #define VERSION_MINOR 1
@@ -77,8 +77,8 @@ int main(int argc, char** argv) {
 
 
     getMacAddr(ifname.data(), sha);
-    const ll_endpoint ep{ifname, sha};
-    raw_socket sock{};
+    const LinkLayerEndpoint ep{ifname, sha};
+    RawSocket sock{};
     sock.bind(ep);
 
     for (int i = 0; i < loop_count; ++i) {

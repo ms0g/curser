@@ -1,17 +1,17 @@
 #pragma once
 
-#include "ll_endp.h"
+#include "linkLayerEndpoint.h"
 
-class base_socket {
+class ISocket {
 };
 
-class raw_socket : public base_socket {
+class RawSocket : public ISocket {
 public:
-    raw_socket(int family, int protocol);
+    RawSocket(int family, int protocol);
 
-    raw_socket();
+    RawSocket();
 
-    ~raw_socket();
+    ~RawSocket();
 
     [[nodiscard]] int family() const {
         return m_family;
@@ -21,7 +21,7 @@ public:
         return m_protocol;
     }
 
-    void bind(const ll_endpoint& ep);
+    void bind(const LinkLayerEndpoint& ep);
 
     void sendto(const void* buf, size_t len);
 
@@ -29,5 +29,5 @@ private:
     int m_family;
     int m_protocol;
     int m_sock;
-    ll_endpoint m_ep;
+    LinkLayerEndpoint m_ep;
 };

@@ -1,11 +1,11 @@
-#include "ll_endp.h"
+#include "linkLayerEndpoint.h"
 #include <cstring>
 #include <sys/socket.h>
 #ifdef __linux__
 #include <arpa/inet.h>
 #endif
 
-ll_endpoint::ll_endpoint(const std::string_view& ifname, uint8_t* sha) : m_sha(sha) {
+LinkLayerEndpoint::LinkLayerEndpoint(const std::string_view& ifname, uint8_t* sha) : m_sha(sha) {
     memset(&sockaddr, 0, sizeof(sockaddr));
 #ifdef __APPLE__
     sockaddr.snd_len = sizeof(sockaddr);

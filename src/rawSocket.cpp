@@ -1,4 +1,4 @@
-#include "raw_socket.h"
+#include "rawSocket.h"
 #include <iostream>
 #include <unistd.h> //close
 #include <sys/socket.h> //socket
@@ -7,7 +7,7 @@
 #include <arpa/inet.h>
 #endif
 
-raw_socket::raw_socket(const int family, int protocol) : m_family(family), m_protocol(htons(protocol)) {
+RawSocket::RawSocket(const int family, int protocol) : m_family(family), m_protocol(htons(protocol)) {
     m_sock = socket(m_family, SOCK_RAW, m_protocol);
     if (m_sock < 0) {
         perror("socket");
@@ -15,7 +15,7 @@ raw_socket::raw_socket(const int family, int protocol) : m_family(family), m_pro
     }
 }
 
-raw_socket::raw_socket() {
+RawSocket::RawSocket() {
 #ifdef __APPLE__
     m_family = AF_NDRV;
     m_protocol = 0;
@@ -31,11 +31,11 @@ raw_socket::raw_socket() {
     }
 }
 
-raw_socket::~raw_socket() {
+RawSocket::~RawSocket() {
     close(m_sock);
 }
 
-void raw_socket::bind(const ll_endpoint& ep) {
+void RawSocket::bind(const LinkLayerEndpoint& ep) {
     m_ep = ep;
     if (::bind(m_sock, reinterpret_cast<sockaddr*>(m_ep.native_handle()), m_ep.size()) < 0) {
         perror("bind");
@@ -43,7 +43,7 @@ void raw_socket::bind(const ll_endpoint& ep) {
     }
 }
 
-void raw_socket::sendto(const void* buf, size_t len) {
+void RawSocket::sendto(const void* buf, size_t len) {
     if (::sendto(m_sock, buf, len, 0, reinterpret_cast<sockaddr*>(m_ep.native_handle()), m_ep.size()) < 0) {
         perror("sendto");
         exit(EXIT_FAILURE);

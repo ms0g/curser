@@ -11,7 +11,7 @@
 #include <net/ndrv.h>
 #endif
 
-class ll_endpoint {
+class LinkLayerEndpoint {
 #ifdef __APPLE__
     sockaddr_ndrv sockaddr{};
 #elif __linux__
@@ -19,11 +19,11 @@ class ll_endpoint {
 #endif
     using native_handle_type = decltype(sockaddr);
 public:
-    ll_endpoint() = default;
+    LinkLayerEndpoint() = default;
 
-    ll_endpoint(const std::string_view& ifname, uint8_t* sha);
+    LinkLayerEndpoint(const std::string_view& ifname, uint8_t* sha);
 
-    ll_endpoint& operator=(const ll_endpoint& other) = default;
+    LinkLayerEndpoint& operator=(const LinkLayerEndpoint& other) = default;
 
     native_handle_type* native_handle() {
         return &sockaddr;
@@ -33,7 +33,7 @@ public:
         return sizeof(sockaddr);
     }
 
-    friend std::ostream& operator<<(std::ostream& os, const ll_endpoint& ep) {
+    friend std::ostream& operator<<(std::ostream& os, const LinkLayerEndpoint& ep) {
 #ifdef __APPLE__
         os << ep.sockaddr.snd_name << ": ";
 #elif __linux__
