@@ -1,3 +1,4 @@
+#include "arp.h"
 #include <iostream>
 #include <cstring>
 #include <net/ethernet.h>
@@ -6,14 +7,13 @@
 #include <arpa/inet.h>
 #endif
 
-#include "arp.h"
 #include "eth.h"
 
-struct arphdr* arp_hdr(struct eth_frame* eth) {
+arphdr* arp_hdr(eth_frame* eth) {
     return reinterpret_cast<arphdr*>(eth->payload);
 }
 
-PktBuilder::PktBuilder(arp_op op) : m_op(op) {
+PktBuilder::PktBuilder(const arp_op op) : m_op(op) {
     memset(raw_pkt, 0, sizeof(raw_pkt));
     eth_pkt = eth_hdr(raw_pkt);
     eth_pkt->type = htons(ETHERTYPE_ARP);

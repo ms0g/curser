@@ -9,4 +9,4 @@ struct eth_frame {
     uint8_t payload[];
 } __attribute__((packed));
 
-struct eth_frame* eth_hdr(void* buf);
+eth_frame* eth_hdr(void* buf);

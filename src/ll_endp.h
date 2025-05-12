@@ -3,31 +3,22 @@
 #include <iomanip>
 #include <iostream>
 #include <string_view>
-
 #ifdef __linux__
 #include <linux/if_packet.h> //struct sockaddr_ll
 #include <net/ethernet.h>
 #include <net/if.h>
 #elif __APPLE__
-
-#include <net/if_dl.h>
-#include <net/if.h>
 #include <net/ndrv.h>
-
 #endif
-
 
 class ll_endpoint {
-private:
-    uint8_t* m_sha{nullptr};
 #ifdef __APPLE__
-    struct sockaddr_ndrv sockaddr{};
+    sockaddr_ndrv sockaddr{};
 #elif __linux__
-    struct sockaddr_ll sockaddr{};
+    sockaddr_ll sockaddr{};
 #endif
-public:
     using native_handle_type = decltype(sockaddr);
-
+public:
     ll_endpoint() = default;
 
     ll_endpoint(const std::string_view& ifname, uint8_t* sha);
@@ -50,12 +41,15 @@ public:
         os << if_indextoname(ep.sockaddr.sll_ifindex, ifname) << ": ";
 #endif
         os << std::hex << std::setfill('0')
-           << std::setw(2) << static_cast<int>(ep.m_sha[0]) << ":"
-           << std::setw(2) << static_cast<int>(ep.m_sha[1]) << ":"
-           << std::setw(2) << static_cast<int>(ep.m_sha[2]) << ":"
-           << std::setw(2) << static_cast<int>(ep.m_sha[3]) << ":"
-           << std::setw(2) << static_cast<int>(ep.m_sha[4]) << ":"
-           << std::setw(2) << static_cast<int>(ep.m_sha[5]);
+                << std::setw(2) << static_cast<int>(ep.m_sha[0]) << ":"
+                << std::setw(2) << static_cast<int>(ep.m_sha[1]) << ":"
+                << std::setw(2) << static_cast<int>(ep.m_sha[2]) << ":"
+                << std::setw(2) << static_cast<int>(ep.m_sha[3]) << ":"
+                << std::setw(2) << static_cast<int>(ep.m_sha[4]) << ":"
+                << std::setw(2) << static_cast<int>(ep.m_sha[5]);
         return os;
     }
+
+private:
+    uint8_t* m_sha{nullptr};
 };

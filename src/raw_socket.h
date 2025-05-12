@@ -6,21 +6,12 @@ class base_socket {
 };
 
 class raw_socket : public base_socket {
-private:
-    const int m_family;
-    const int m_protocol;
-    int m_sock;
-    ll_endpoint m_ep;
 public:
     raw_socket(int family, int protocol);
 
     raw_socket();
 
     ~raw_socket();
-
-    [[nodiscard]] static int type() {
-        return SOCK_RAW;
-    }
 
     [[nodiscard]] int family() const {
         return m_family;
@@ -33,4 +24,10 @@ public:
     void bind(const ll_endpoint& ep);
 
     void sendto(const void* buf, size_t len);
+
+private:
+    int m_family;
+    int m_protocol;
+    int m_sock;
+    ll_endpoint m_ep;
 };

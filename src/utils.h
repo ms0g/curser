@@ -1,7 +1,6 @@
 #pragma once
 
 #include <type_traits>
-#include <cstdint>
 
 uint32_t inet_bf(const char* addr);
 

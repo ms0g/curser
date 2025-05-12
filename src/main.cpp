@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cstring>
 #include "ll_endp.h"
-#include "eth.h"
 #include "arp.h"
 #include "utils.h"
 #include "raw_socket.h"
@@ -30,16 +29,18 @@ int main(int argc, char** argv) {
     std::string_view ifname;
     uint32_t vpa{0};
     uint32_t gpa{0};
-    uint8_t sha[6]{0};
-    uint8_t gha[6]{0};
-    arp_op op;
+    uint8_t sha[6]{};
+    uint8_t gha[6]{};
+    arp_op op = {};
     int loop_count{1};
 
     if (argc < 11) {
         if (argc == 2 && (!std::strcmp(argv[1], "-h") || !std::strcmp(argv[1], "--help"))) {
             std::cout << usage << std::endl;
             return EXIT_SUCCESS;
-        } else if (argc == 2 && (!std::strcmp(argv[1], "-v") || !std::strcmp(argv[1], "--version"))) {
+        }
+
+        if (argc == 2 && (!std::strcmp(argv[1], "-v") || !std::strcmp(argv[1], "--version"))) {
             std::cout << "curser version " << VERSION << std::endl;
             return EXIT_SUCCESS;
         }
@@ -76,7 +77,7 @@ int main(int argc, char** argv) {
 
 
     getMacAddr(ifname.data(), sha);
-    ll_endpoint ep{ifname, sha};
+    const ll_endpoint ep{ifname, sha};
     raw_socket sock{};
     sock.bind(ep);
 

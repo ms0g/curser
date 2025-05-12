@@ -1,10 +1,9 @@
+#include "ll_endp.h"
 #include <cstring>
-
+#include <sys/socket.h>
 #ifdef __linux__
 #include <arpa/inet.h>
 #endif
-
-#include "ll_endp.h"
 
 ll_endpoint::ll_endpoint(const std::string_view& ifname, uint8_t* sha) : m_sha(sha) {
     memset(&sockaddr, 0, sizeof(sockaddr));
